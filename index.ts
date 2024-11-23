@@ -19,6 +19,7 @@ app.use(
     createProxyMiddleware({
         target: 'https://api.openai.com/v1',
         changeOrigin: true,
+        ws: true,
         timeout: 100000,
         proxyTimeout: 100000,
         on: {
