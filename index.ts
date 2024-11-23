@@ -17,8 +17,10 @@ app.use(router);
 app.use(
     '/v1/',
     createProxyMiddleware({
-        target: 'https://api.openai.com//v1',
+        target: 'https://api.openai.com/v1',
         changeOrigin: true,
+        timeout: 100000,
+        proxyTimeout: 100000,
         on: {
             proxyReq: (proxyReq, req, res) => {
                 // Log incoming request details
@@ -50,7 +52,8 @@ app.use(
                     'Content-Type,Content-Length, Authorization, Accept,X-Requested-With';
             },
             error: (err, req, res) => {
-                console.log('Proxy encountered an error: ', err);
+                console.error('Proxy encountered an error: ', err);
+                res.end(`Proxy error: ${err.message}`);
             }
         }
     })
